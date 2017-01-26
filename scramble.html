@@ -14,10 +14,48 @@
         var playing = true;
 
         function randomeArbitrary(min, max) {
+            // get random integer number exclude max
             min = Math.ceil(min);
             max = Math.floor(max);
 
             return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        /*function scramble(word) {
+            //Algorithms for scramle:
+            //for each index i = 0 to n - 1, inclusive:
+            //choose a random index j in the range i to length of word, exclusive.
+            //swap A[i] and A[j]
+            // not the best algorithms for small words!!!!!!!!!!!!!!!!!!!!!!
+            var length_word = word.length;
+
+            var j;    // index for swap
+            var temp; // temporary variable for swap
+            for (var i = 0; i < length_word; i++) {
+                j = randomeArbitrary(i, length_word);
+                temp = word[i];
+                word = word.replace(word[i], word[j]);
+                word = word.replace(word[j], temp);
+            }
+            return word;
+        }*/
+
+        function scramble2(word){
+            var order_index = [];
+
+            var index;
+            while (order_index.length !== word.length) {
+                index = randomeArbitrary(0, word.length);
+                if (order_index.indexOf(index) == -1){
+                    order_index.push(index);
+                }
+            }
+
+            var new_word = "";
+            for (var i = 0; i < word.length; i++){   
+                new_word += word[order_index[i]];
+            }
+            return new_word;
         }
 
         while (playing) {
@@ -26,9 +64,12 @@
             var index = randomeArbitrary(0, WORDS.length);
             var word = WORDS[index];
             // Grab the corresponding scrambled word from the SCRAMBLED array.
-            var scrambled_word = SCRAMBLED[index];
+            //var scrambled_word = SCRAMBLED[index];
+            var scrambled_word = scramble2(word);
+
+
             // Prompt the user to guess the original word when given the scrambled word.
-            var user_guess = window.prompt("What is " + scrambled_word + "?");
+            var user_guess = window.prompt("What is " + scrambled_word + "?").trim().toLowerCase();
             // If the user guesses wrong, tell them they were wrong and show the right word.
             // If the user guesses the correct word, congratulate them.
             if (user_guess !== word){
